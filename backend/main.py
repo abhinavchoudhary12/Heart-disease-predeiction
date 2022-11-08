@@ -50,6 +50,7 @@ def hello():
 
 @app.route("/feedback",methods=['POST','GET'])
 def feedback():
+
     if request.method=='POST':
         first=request.json['first']
         last=request.json['last']
@@ -128,32 +129,40 @@ def predict():
 
 
 
-@app.route('/admin',methods=['GET'])
+@app.route('/admin',methods=['GET','POST'])
 def admin():
-    b=Feedback.query.all()
-    l=[]
+    if request.method=='POST':
+        print("hello")
+        print(request.json['passwrd'])
+        if request.json['passwrd']=='abhinav':
+            b=Feedback.query.all()
+            l=[]
 
-    for i in b:
-        n=['sno','first_name','last_name','city','phone_no','email','feedback','date']
-        m=[]
+            for i in b:
+                n=['sno','first_name','last_name','city','phone_no','email','feedback','date']
+                m=[]
 
-        s=i.sno
-        f_n=i.f_name
-        l_n=i.l_name
-        c=i.city
-        em=i.email
-        phn=i.phone_no
-        fe=i.feed
-        da=i.date
-        da=str(da)
-        m.extend((s,f_n,l_n,c,phn,em,fe,da))
-        jsn=dict(zip(n,m))
-        l.append(jsn)
+                s=i.sno
+                f_n=i.f_name
+                l_n=i.l_name
+                c=i.city
+                em=i.email
+                phn=i.phone_no
+                fe=i.feed
+                da=i.date
+                da=str(da)
+                m.extend((s,f_n,l_n,c,phn,em,fe,da))
+                jsn=dict(zip(n,m))
+                l.append(jsn)
 
-    api={"data":l}
-    print(type(l))
-    print(type(api))
-    return l
+            api={"data":l}
+            print(type(l))
+            print(type(api))
+            return l
+        else:
+            a=int(0)
+            data={"d":a}
+            return data
 
 
 if __name__=='__main__':

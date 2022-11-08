@@ -1,36 +1,57 @@
+
 import axios from 'axios';
 import React, { Component } from 'react';
     
 class Admin extends Component {
-    state = {data:[]};
+    state={
+      passwrd:"",
+      data:[]
+    };
 
-    componentDidMount(){
-        
-    }
+    
+    handleOnChange = (event) => {
+      const { name, value } = event.target;
+      this.setState({
+        [name]: value,
+      });
+      
+    };
     prevent=(e)=>{
 
         e.preventDefault();
-        const login=prompt("enter password");
-        if(login==='abhinav'){
-        axios.get("http://127.0.0.1:5000/admin").then((response)=>{
-            
+        // const login=prompt("enter password");
+        // if(login==='abhinav'){
+          
+        const  data=this.state;
+        
+        axios.post("http://127.0.0.1:5000/admin",data).then((response)=>{
+        if(response.data.d===0)
+        {
+          
+          alert("enter correct password")
+          this.setState({data:[]})
+        }else
+        {    
         this.setState({data:response.data})
         console.log(this.state.sno)        
-    }).catch((error)=>{
+    }
+  }).catch((error)=>{
             alert(error)
         })
         }
-        else{
-            alert("enter correct password")
-        }
-    }
+      
+        // else{
+        //     alert("enter correct password")
+         
+    
     render() { 
         
         return (
+          
             <>
-            <input className='focus:border-rose-400 text-center mb-2 rounded shadow-xl h-10 w-44 placeholder-red-500' name="password" placeholder="password" />
+            <input  className='focus:border-rose-400 text-center mb-2 rounded shadow-xl h-10 w-44 placeholder-red-500' name="passwrd" required placeholder="password" value={this.state.pass} onChange={this.handleOnChange}/>
             <br/>
-            <button onClick={this.prevent} className='text-center   bg-black rounded-md hover:bg-gray-700 text-white p-4 '>
+            <button  onClick={this.prevent} className='text-center   bg-black rounded-md hover:bg-gray-700 text-white p-4 '>
             Get Feedback
             </button>
             <div className="flex flex-col">
